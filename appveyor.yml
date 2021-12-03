@@ -1,0 +1,20 @@
+version: 0.6.0.{build}
+skip_tags: true
+configuration: Release
+image: Visual Studio 2017
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: $(appveyor_build_version)
+before_build:
+ - nuget restore -DisableParallelProcessing
+build:
+  project: Mondo.sln
+  verbosity: minimal
+  publish_nuget: true
+  publish_nuget_symbols: true
+test:
+  assemblies: Mondo.Tests\bin\Release\Mondo.Tests.dll
+nuget:
+  project_feed: true
+  disable_publish_on_pr: true
